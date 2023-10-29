@@ -1,0 +1,131 @@
+{
+  "title": "Sample Project",
+  "kanban": {
+    "backlog": [
+      {
+        "ticketTitle": "Task 1",
+        "severity": "High",
+        "Owner": {
+          "_id": "653dd9e801b31ea43a5b0fea",
+          "firstName": "solutionsmet",
+          "lastName": "met",
+          "bio": "Break silos between IT and core business teams. Create new data-driven solutions",
+          "profileImage": "https://ui-avatars.com/api/?name=solutionsmet+met"
+        },
+        "assignedTo": [],
+        "description": "This is the description of Task 1.",
+        "status": "backlog",
+        "taskImage": "task1.jpg",
+          "_id":"12341243124"
+      },
+      {
+        "ticketTitle": "Task 2",
+        "severity": "Medium",
+        "Owner": {
+          "_id": "653e64dddb8ba5d4237d92ab",
+          "firstName": "Ethan",
+          "lastName": "Anderson",
+          "bio": "Passionate about environmental conservation and sustainable living. Working towards a greener future.",
+          "profileImage": "https://ui-avatars.com/api/?name=Ethan+Townsend+Anderson"
+        },
+        "assignedTo": [],
+        "description": "This is the description of Task 2.",
+        "status": "backlog",
+        "taskImage": "task2.jpg",
+          "_id":"4asdfw34"
+      }
+    ],
+    "inProgress": [
+      {
+        "ticketTitle": "Task 3",
+        "severity": "Low",
+        "Owner": {
+          "_id": "653e64e0db8ba5d4237d92ad",
+          "firstName": "Aria",
+          "lastName": "Williams",
+          "bio": "Exploring the world, one adventure at a time. Travel enthusiast and photography lover.",
+          "profileImage": "https://ui-avatars.com/api/?name=Aria+Williams"
+        },
+        "assignedTo": [],
+        "description": "This is the description of Task 3.",
+        "status": "inProgress",
+        "taskImage": "task3.jpg",
+          "_id":"4a342344"
+      }
+    ],
+    "readyForReview": [
+      {
+        "ticketTitle": "Task 4",
+        "severity": "High",
+        "Owner": {
+          "_id": "653e64e7db8ba5d4237d92af",
+          "firstName": "Liam",
+          "lastName": "Smith",
+          "bio": "Passionate about coding, building cool apps, and solving problems with technology.",
+          "profileImage": "https://ui-avatars.com/api/?name=Liam+Smith"
+        },
+        "assignedTo": [],
+        "description": "This is the description of Task 4.",
+        "status": "readyForReview",
+        "taskImage": "task4.jpg",
+        "_id":"123421"
+      }
+    ],
+    "completed": [
+      {
+        "ticketTitle": "Task 5",
+        "severity": "Medium",
+        "Owner": {
+          "_id": "653e64eadb8ba5d4237d92b1",
+          "firstName": "Sophia",
+          "lastName": "Miller",
+          "bio": "Dedicated to making a positive impact through social activism and community outreach.",
+          "profileImage": "https://ui-avatars.com/api/?name=Sophia+Miller"
+        },
+        "assignedTo": [],
+        "description": "This is the description of Task 5.",
+        "status": "completed",
+        "taskImage": "task5.jpg",
+          "_id":"csbcxv"
+
+      }
+    ]
+  },
+  "members": [
+    {
+      "_id": "653dd9e801b31ea43a5b0fea",
+      "firstName": "solutionsmet",
+      "lastName": "met",
+      "bio": "Break silos between IT and core business teams. Create new data-driven solutions",
+      "profileImage": "https://ui-avatars.com/api/?name=solutionsmet+met"
+    },
+    {
+      "_id": "653e64dddb8ba5d4237d92ab",
+      "firstName": "Ethan",
+      "lastName": "Anderson",
+      "bio": "Passionate about environmental conservation and sustainable living. Working towards a greener future.",
+      "profileImage": "https://ui-avatars.com/api/?name=Ethan+Townsend+Anderson"
+    },
+    {
+      "_id": "653e64e0db8ba5d4237d92ad",
+      "firstName": "Aria",
+      "lastName": "Williams",
+      "bio": "Exploring the world, one adventure at a time. Travel enthusiast and photography lover.",
+      "profileImage": "https://ui-avatars.com/api/?name=Aria+Williams"
+    },
+    {
+      "_id": "653e64e7db8ba5d4237d92af",
+      "firstName": "Liam",
+      "lastName": "Smith",
+      "bio": "Passionate about coding, building cool apps, and solving problems with technology.",
+      "profileImage": "https://ui-avatars.com/api/?name=Liam+Smith"
+    },
+    {
+      "_id": "653e64eadb8ba5d4237d92b1",
+      "firstName": "Sophia",
+      "lastName": "Miller",
+      "bio": "Dedicated to making a positive impact through social activism and community outreach.",
+      "profileImage": "https://ui-avatars.com/api/?name=Sophia+Miller"
+    }
+  ]
+}

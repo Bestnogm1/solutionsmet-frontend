@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react'
+import { SideBar } from './components/SideBar/SideBar';
+import { Route, Routes } from 'react-router';
+import { HomePage } from './pages/Homepage/HomePage';
 
-function App() {
+const App = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <div className="lg:pl-72">
+          <main className="py-10">
+            <div className="px-4 sm:px-6 lg:px-8">
+              <Routes>
+                <Route
+                  path="/"
+                  element={< HomePage />}
+                />
+              </Routes>
+
+            </div>
+          </main>
+        </div>
+      </div>
+    </>
   );
 }
 
