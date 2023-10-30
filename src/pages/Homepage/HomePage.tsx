@@ -1,13 +1,14 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { useMutation } from 'react-query';
-import TicketModal from './Components/TicketModal';
+
 import { useState } from 'react';
 import { Button } from '../../@/components/ui/button';
 import fakeData from '../../fakeData.json'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { TicketDetailComp } from './Components/TicketDetail';
+import { CreateTicketModal } from './Components/TicketModal';
 export const HomePage = () => {
-  const [open, setOpen] = useState(false)
+  const [createTicketModalOpen, setCreateTicketModalOpen] = useState(false)
   const [projectData, setProjectData] = useState<any>(fakeData)
   const { data, isLoading } = useQuery({
     queryFn: async () => {
@@ -87,16 +88,17 @@ export const HomePage = () => {
                     ref={provided.innerRef}
                   >
                     <div className="font-semibold mb-4">
-                      {/* Add the title for this column here */}
                     </div>
                     <button
                       className="bg-blue-500 text-white py-2 px-4 rounded-full mb-4"
                       onClick={() => {
-                        // Implement your create ticket logic here
+                        setCreateTicketModalOpen(true)
                       }}
                     >
                       Create Task
                     </button>
+                    <CreateTicketModal isOpen={createTicketModalOpen}
+                      setIsOpen={setCreateTicketModalOpen} />
                     <div className="content">
                       {projectData.kanban[ticketsStatus]?.map(
                         (ticketDetail: any, idx: any) => (
@@ -137,7 +139,5 @@ export const HomePage = () => {
       </div>
     </div>
   );
-
-
 }
 
