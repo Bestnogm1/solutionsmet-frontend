@@ -70,7 +70,24 @@ export const HomePage = () => {
       taskId: taskId
     });
   };
-
+  const statusChange = (status: string) => {
+    switch (status) {
+      case "backlog":
+        return "Backlog"
+        break;
+      case "inProgress":
+        return "In Progress";
+        break;
+      case "readyForReview":
+        return "Ready For Review";
+        break;
+      case "completed":
+        return "Completed";
+        break;
+      default:
+        return "Backlog";
+    }
+  }
   return (
     <div className="AllTickets">
       <div >
@@ -102,10 +119,11 @@ export const HomePage = () => {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    <>
+                    <div >
+                      {statusChange(ticketsStatus)}
+                      {/* {ticketsStatus} */}
                       <CreateTicketModal projectData={data} />
-                      {ticketsStatus}
-                    </>
+                    </div>
                     <div className="content">
                       {data?.kanban[ticketsStatus]?.map(
                         (ticketDetail: any, idx: any) => (
