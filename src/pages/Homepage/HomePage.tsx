@@ -1,60 +1,76 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
-import { useMutation } from 'react-query';
-
+import { useQuery, useMutation, InvalidateQueryFilters, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button } from '../../@/components/ui/button';
-import fakeData from '../../fakeData.json'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { TicketDetailComp } from './Components/TicketDetail';
 import { CreateTicketModal } from './Components/TicketModal';
+import { toast } from 'react-toastify';
 export const HomePage = () => {
+  const queryClient = useQueryClient()
   const [createTicketModalOpen, setCreateTicketModalOpen] = useState(false)
-  const [projectData, setProjectData] = useState<any>(fakeData)
   const { data, isLoading } = useQuery({
     queryFn: async () => {
-      const response = await fetch('http://localhost:8000/user/all');
+      const response = await fetch('http://localhost:8000/project/653e677c1df38bd7c5421ec9');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       return response.json();
     },
-    queryKey: ["users"]
+    queryKey: ["project"]
   });
+
+  const [ticketStatusChange, setTicketStatusChange] = useState<any>()
+  const { mutateAsync } = useMutation({
+    mutationFn: async (data: any) => {
+      const response = await fetch("http://localhost:8000/project/653e677c1df38bd7c5421ec9/ticketStatusChange", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const responseData = await response.json();
+      console.log(responseData);
+      return responseData;
+    },
+    onSuccess: () => {
+      toast("Ticket status changed successfully")
+      queryClient.invalidateQueries(["project"] as InvalidateQueryFilters);
+    }
+  });
+
+
   if (isLoading) {
     return <div>Loading...</div>
   }
   if (!data) {
-    console.log(data)
     return <div>Something went wrong</div>
   }
-  const handleOnDragEnd = (result: any) => {
+
+  const handleOnDragEnd = async (result: any) => {
+    console.log("hello");
     if (!result.destination) {
       return;
     }
-
     const sourceColumn = result.source.droppableId;
     const destinationColumn = result.destination.droppableId;
     const taskId = result.draggableId;
+    console.log({ sourceColumn, destinationColumn, taskId })
+    setTicketStatusChange({
+      newStatus: destinationColumn,
+      oldStatus: sourceColumn,
+      taskId: taskId
+    });
 
-    const draggedTask = projectData.kanban[sourceColumn].find(
-      (task: any) => task._id === taskId
-    );
-
-    if (draggedTask) {
-      const sourceColumnIndex = projectData.kanban[sourceColumn].indexOf(
-        draggedTask
-      );
-      projectData.kanban[sourceColumn].splice(sourceColumnIndex, 1);
-
-      projectData.kanban[destinationColumn].splice(
-        result.destination.index,
-        0,
-        draggedTask
-      );
-      setProjectData({ ...projectData });
-    }
+    await mutateAsync({
+      newStatus: destinationColumn,
+      oldStatus: sourceColumn,
+      taskId: taskId
+    });
   };
-  console.log(projectData)
+
   return (
     <div className="AllTickets">
       <div >
@@ -63,47 +79,38 @@ export const HomePage = () => {
             <h1 className="text-white text-2xl font-bold">Kanban board</h1>
           </div>
           <div className="isolate flex -space-x-2 overflow-hidden">
-            {projectData.members.map((member: any, index: number) => (
+            {data?.members?.map((member: any, index: number) => (
               <img
                 className={`relative inline-block h-8 w-8 rounded-full ring-2 ring-white`}
-                src={member.profileImage}
+                src={member?.profileImage}
                 alt=""
-                style={{ zIndex: 10 * (projectData.members.length - index) }}
+                style={{ zIndex: 10 * (data?.members?.length - index) }}
               />
             ))}
           </div>
-
         </div>
       </div>
       <div className="flex space-x-4 p-4">
-        {projectData && (
+        {data && (
           <DragDropContext onDragEnd={handleOnDragEnd}>
-            {Object.keys(projectData.kanban)?.map((ticketsStatus, i) => (
+            {Object.keys(data?.kanban)?.map((ticketsStatus, i) => (
               <Droppable droppableId={ticketsStatus} key={ticketsStatus}>
                 {(provided) => (
                   <div
-                    className="ticketStatusContainer border p-4 rounded-lg"
+                    className="ticketStatusContainer border p-4 rounded-lg w-[300px]"
                     key={i}
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    <div className="font-semibold mb-4">
-                    </div>
-                    <button
-                      className="bg-blue-500 text-white py-2 px-4 rounded-full mb-4"
-                      onClick={() => {
-                        setCreateTicketModalOpen(true)
-                      }}
-                    >
-                      Create Task
-                    </button>
-                    <CreateTicketModal isOpen={createTicketModalOpen}
-                      setIsOpen={setCreateTicketModalOpen} />
+                    <>
+                      <CreateTicketModal projectData={data} />
+                      {ticketsStatus}
+                    </>
                     <div className="content">
-                      {projectData.kanban[ticketsStatus]?.map(
+                      {data?.kanban[ticketsStatus]?.map(
                         (ticketDetail: any, idx: any) => (
                           <Draggable
-                            key={ticketDetail._id}
+                            key={ticketDetail?._id}
                             draggableId={ticketDetail._id}
                             index={idx}
                           >
@@ -115,14 +122,7 @@ export const HomePage = () => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <div>
-                                  <h2 className="font-semibold text-lg mb-2">
-                                    {ticketDetail.ticketTitle}
-                                  </h2>
-                                  <p className="text-gray-700">
-                                    {ticketDetail.description}
-                                  </p>
-                                </div>
+                                <TicketDetailComp ticketDetail={ticketDetail} />
                               </div>
                             )}
                           </Draggable>
